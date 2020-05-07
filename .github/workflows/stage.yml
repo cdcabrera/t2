@@ -17,7 +17,8 @@ jobs:
       - name: Rebase branch
         run: |
           git switch -c master
-          git merge origin/stage --ff-only
+          git fetch origin stage
+          git merge origin stage --ff -n -m "[TEMP]"
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -34,7 +35,7 @@ jobs:
         run: |
           BODY=$(node -pe "require('child_process').execSync('yarn release --dry-run').toString().split('---')[1].replace(/%/g,'%25').replace(/\n/g,'%0A').trim()")
           TITLE=$(node -pe "require('child_process').execSync('yarn release --dry-run').toString().split('---')[1].trim().split('\n')[0].split(/\[|\]/g)[1]")
-          echo "::set-env name=PR_TITLE::$TITLE"
+          echo "::set-env name=PR_TITLE::${TITLE:-Fallback}"
           echo "::set-env name=PR_BODY::$BODY"
       - name: Setup PR
         if: ${{ contains( env.CONFIRM_RELEASE, 'true') }}
