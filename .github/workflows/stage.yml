@@ -16,9 +16,10 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
       - name: Rebase branch
         run: |
-          git fetch origin
+          git remote add test "https://github.com/$GITHUB_REPOSITORY"
+          git fetch test
           git switch -c master
-          git merge origin stage --ff -n -m "[TEMP]"
+          git merge test stage --ff -n -m "[TEMP]"
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
