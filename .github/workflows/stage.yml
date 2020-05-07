@@ -14,13 +14,11 @@ jobs:
         run: |
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git config user.name "$GITHUB_ACTOR"
-      - name: Rebase branch
-        run: |
-          git remote add test "https://github.com/$GITHUB_REPOSITORY"
-          git fetch test
+          git remote add ssh-origin "https://github.com/$GITHUB_REPOSITORY"
+          git fetch ssh-origin
           git checkout -b temp
-          git reset --hard test/master
-          git merge test stage --ff --allow-unrelated-histories -n -m "[TEMP]"
+          git reset --hard ssh-origin/stage
+          git rebase ssh-origin/master
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
