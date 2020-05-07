@@ -17,8 +17,9 @@ jobs:
       - name: Rebase branch
         run: |
           git switch -c master
+          git checkout -b TEMP
           git fetch origin stage
-          git merge origin/stage --ff -n -m "[TEMP]"
+          git merge origin stage --ff -n -m "[TEMP]"
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
