@@ -12,13 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup GIT
         run: |
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git config user.name "$GITHUB_ACTOR"
-          git remote add ssh-origin "https://github.com/$GITHUB_REPOSITORY"
-          git fetch ssh-origin
-          git checkout -b temp
-          git reset --hard ssh-origin/stage
-          git rebase ssh-origin/master
+          git switch -c stage
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
