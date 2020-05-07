@@ -12,7 +12,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup GIT
         run: |
-          git switch -c stage
+          git checkout stage
+          git checkout -b temp
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
