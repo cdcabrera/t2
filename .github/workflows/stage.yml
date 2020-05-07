@@ -16,9 +16,8 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
       - name: Rebase branch
         run: |
-          git fetch --tags origin master
-          git checkout -b temp
-          git rebase origin/master
+          git switch -c master
+          git merge origin/stage --ff-only
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
