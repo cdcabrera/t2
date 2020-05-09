@@ -19,11 +19,6 @@ jobs:
           git switch -c stage
           git fetch --tags origin master
           git rebase origin/master
-      - name: Push Rebase
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: |
-          git push -f https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY" stage:stage
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
