@@ -10,38 +10,22 @@ jobs:
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v1
-      - name: Setup GIT
+      - name: Git commits
         run: |
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git config user.name "$GITHUB_ACTOR"
-      - name: Rebase
-        run: |
-          git switch -c stage
-          git fetch --tags origin master
-          git rebase origin/master
+          COMMITS=$(git cherry -v --abbrev=7 origin/master | grep "+")
+          echo ::set-env name=GIT_COMMITS::$COMMITS
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Node.js packages
         run: yarn install
-      - name: Set release PR confirmation
-        if:  ${{ !contains(env.CONFIRM_COMMIT, 'true')  }}
-        run: |
-          RELEASE=$(node -pe "require('child_process').execSync('yarn release --dry-run').toString().split('---')[1].trim().split('\n').length >= 3")
-          TEMP=$(node -pe "require('child_process').execSync('yarn release --dry-run').toString().split('---')[1].replace(/%/g,'%25').replace(/\n/g,'%0A').trim()")
-          echo "$TEMP"
-          echo ::set-env name=CONFIRM_RELEASE::$RELEASE
       - name: Set release PR content
-        if: ${{ contains( env.CONFIRM_RELEASE, 'true') }}
         run: |
-          BODY=$(node -pe "require('child_process').execSync('yarn release --dry-run').toString().split('---')[1].replace(/%/g,'%25').replace(/\n/g,'%0A').trim()")
-          TITLE=$(node -pe "require('child_process').execSync('yarn release --dry-run').toString().split('---')[1].trim().split('\n')[0].split(/\[|\]/g)[1]")
-          echo "::set-env name=PR_TITLE::${TITLE:-Fallback}"
-          echo "::set-env name=PR_BODY::$BODY"
+          echo "::set-env name=PR_TITLE::${TITLE:-Lorem Ipsum}"
+          echo "::set-env name=PR_BODY::${GIT_COMMITS:-Lorem Ipsum, dolor sit amet}"
       - uses: actions/checkout@v2
       - name: Setup PR
-        if: ${{ contains( env.CONFIRM_RELEASE, 'true') }}
         uses: repo-sync/pull-request@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
