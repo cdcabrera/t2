@@ -1,10 +1,12 @@
+// eslint-disable-next-line node/no-unpublished-require
 const commitTypes = require('conventional-commit-types');
 const { argv = [] } = process;
 
-const commits = (argv.slice(2).join('') || '')
+const commits = (argv.join(' ') || '')
   .trim()
-  .replace(/\+\s/g, '')
-  .split(/\n/g)
+  // .replace(/\+\s/g, '')
+  .split(/\+\s/g)
+  // .split(/\n/g)
   .filter(message => /:/.test(message))
   .map(message => {
     const [hashTypeScope, ...description] = message.split(/:/);
@@ -34,4 +36,5 @@ Object.keys(commits).forEach(commitType => {
   output += '\n';
 });
 
-console.log(output.replace(/%/g, '%25').replace(/\n/g, '%0A'));
+// console.log(output.replace(/%/g, '%25').replace(/\n/g, '%0A'));
+console.log(output);
