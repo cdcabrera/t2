@@ -22,13 +22,14 @@ jobs:
         run: yarn install
       - name: Set release PR content
         run: |
-          echo "::set-env name=PR_TITLE::${TITLE:-Lorem Ipsum}"
-          echo "::set-env name=PR_BODY::${GIT_COMMITS:-Lorem Ipsum, dolor sit amet}"
+          BODY=$(node ./scripts/setup-pr.js "$COMMITS")
+          echo "::set-env name=PR_TITLE::${TITLE:-Lorem ipsum}"
+          echo "::set-env name=PR_BODY::${BODY}"
       - uses: actions/checkout@v2
       - name: Setup PR
         uses: repo-sync/pull-request@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_title: Production increment ${{ env.PR_TITLE }}
+          pr_title: Environment Sync, ${{ env.PR_TITLE }}
           pr_body: "${{ env.PR_BODY }}"
           pr_draft: true
