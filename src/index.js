@@ -5,5 +5,4 @@ const opts = {
   two: '2'
 };
 
-
 module.exports = { t2, opts };
