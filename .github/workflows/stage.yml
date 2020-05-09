@@ -22,7 +22,7 @@ jobs:
         run: yarn install
       - name: Set release PR content
         run: |
-          BODY=$(node ./scripts/setup-pr.js "$COMMITS")
+          BODY=$(node ./scripts/setup-pr.js "$GIT_COMMITS")
           echo "::set-env name=PR_TITLE::${TITLE:-Lorem ipsum}"
           echo "::set-env name=PR_BODY::${BODY}"
       - uses: actions/checkout@v2
