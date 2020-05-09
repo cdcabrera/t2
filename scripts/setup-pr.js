@@ -36,5 +36,5 @@ Object.keys(commits).forEach(commitType => {
   output += '\n';
 });
 
-// console.log(output.replace(/%/g, '%25').replace(/\n/g, '%0A'));
-console.log(output);
+console.log(output.replace(/%/g, '%25').replace(/\n/g, '%0A'));
+// console.log(output);
