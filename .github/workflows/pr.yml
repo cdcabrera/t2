@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
+          cache-dependency-path: ${{ github.workspace }}/node_modules
       - name: Install Node.js packages
         run: yarn install
       - name: Lint and test
