@@ -39,10 +39,12 @@
   "scripts": {
     "build": "run-s -l build:files test:integration",
     "build:files": "sh ./scripts/build.sh",
+    "build:deps": "ncu --doctor -u --doctorInstall \"yarn\" --doctorTest \"yarn test:deps\"",
     "release": "standard-version",
     "test": "run-s -l test:lint test:ci",
     "test:ci": "export CI=true; jest --collectCoverage",
     "test:clearCache": "jest --clearCache",
+    "test:deps": "run-s test build",
     "test:dev": "eslint ./src; jest --roots=./src --watch",
     "test:integration": "jest --roots=./tests",
     "test:integration-dev": "jest --roots=./tests --watchAll",
